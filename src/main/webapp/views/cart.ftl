@@ -1,5 +1,10 @@
 <#include "mainTemplate.ftl"/>
 <#macro page_body>
+<style>
+    .badCount{
+        border-color: red;
+    }
+</style>
 <div id="all">
     <div id="content">
         <div class="container">
@@ -16,10 +21,11 @@
 
                 <div class="box">
 
-                    <form method="post" action="checkout1.html">
+
 
                         <h1>Корзина</h1>
-                        <p class="text-muted">У вас (<#if cart??>${cart.getTotalCount()}<#else>0</#if>) товаров в корзине</p>
+                        <p class="text-muted">У вас (<#if cart??>${cart.getTotalCount()}<#else>0</#if>) товаров в
+                            корзине</p>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -32,27 +38,34 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#if cart??>
-                                <#list cart.productItems as pr>
-                                <tr>
-                                    <td>
-                                        <a href="#">
-                                            <img src="/load_image/${pr.product.id}" alt="White Blouse Armani">
-                                        </a>
-                                    </td>
-                                    <td><a href="#">${pr.product.description.name}</a>
-                                    </td>
-                                    <td>
-                                        <input type="number" value="${pr.number}" class="form-control">
-                                    </td>
-                                    <td>${pr.product.cost}</td>
-                                    <td>$0.00</td>
-                                    <td>$246.00</td>
-                                    <td><a href="#"><i class="fa fa-trash-o"></i></a>
-                                    </td>
-                                </tr>
-                                </#list>
-                                </#if>
+                                    <#if cart??>
+                                        <#list cart.productItems as pr>
+                                        <tr id="PI${pr.product.id}">
+                                            <td>
+                                                <a href="#">
+                                                    <img src="/load_image/${pr.product.id}" alt="White Blouse Armani">
+                                                </a>
+                                            </td>
+                                            <td><a href="#">${pr.product.description.name}</a>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-default"
+                                                        onclick="changeNumber(${pr.product.id},-1)"><i
+                                                        class="fa fa-chevron-left"></i></button>
+                                                <input type="number" value="${pr.number}" class="form-control" disabled
+                                                       id="pr${pr.product.id}">
+                                                <button class="btn btn-default"
+                                                        onclick="changeNumber(${pr.product.id},1)"><i
+                                                        class="fa fa-chevron-right"></i></button>
+                                            </td>
+                                            <td>${pr.product.cost}</td>
+                                            <td>$0.00</td>
+                                            <td>$246.00</td>
+                                            <td><a href="" onclick="deleteProduct(${pr.product.id})"><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                        </#list>
+                                    </#if>
                                 </tbody>
                                 <tfoot>
                                 <tr>
@@ -67,16 +80,17 @@
 
                         <div class="box-footer">
                             <div class="pull-left">
-                                <a href="/catalog/1" class="btn btn-default"><i class="fa fa-chevron-left"></i>Продолжить покупки</a>
+                                <a href="/catalog/1" class="btn btn-default"><i class="fa fa-chevron-left"></i>Продолжить
+                                    покупки</a>
                             </div>
                             <div class="pull-right">
-                                <button class="btn btn-default"><i class="fa fa-refresh"></i> Обновить корзину</button>
-                                <button type="submit" class="btn btn-primary">Сделать заказ <i class="fa fa-chevron-right"></i>
+                                <button class="btn btn-default"onclick="location.href='/cart'"><i class="fa fa-refresh"></i> Обновить корзину</button>
+                                <button type="submit" class="btn btn-primary" onclick="location.href='/order'">Сделать заказ <i
+                                        class="fa fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                    </form>
 
                 </div>
                 <!-- /.box -->
@@ -183,7 +197,8 @@
                     <div class="box-header">
                         <h3>Order summary</h3>
                     </div>
-                    <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
+                    <p class="text-muted">Shipping and additional costs are calculated based on the values you have
+                        entered.</p>
 
                     <div class="table-responsive">
                         <table class="table">
@@ -240,6 +255,39 @@
     <!-- /#content -->
 
 </div>
+<script>
+    function changeNumber(id, count) {
+
+        $("#pr"+id).removeClass("badCount");
+        $.ajax({
+            url: "/cart/count",
+            type: "POST",
+            data: {
+                productId: id,
+                count: count
+            },
+            success: function (status) {
+                if (!status) {
+                    $("#pr"+id).addClass("badCount");
+                }
+                else {
+                    $("#pr"+id).val(function(i, oldval) {
+                        return parseInt( oldval, 10)+count;
+                    });
+                }
+            }
+
+        });
+    }
+    function deleteProduct(prId) {
+        $("#PI"+prId).remove();
+        $.ajax({
+            url: "/cart/remove",
+            type: "POST",
+            data:{prId: prId}
+        });
+    }
+</script>
 <!-- /#all -->
 </#macro>
 

@@ -38,4 +38,10 @@ public class CartController {
         cart.setProductCount(productId, cartCount+count);
         return true;
     }
+    @ResponseBody
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    public void deleteProductFromCart(@RequestParam("prId") Long productItemId){
+        Cart cart = (Cart) httpServletRequest.getSession().getAttribute("cart");
+        cart.deleteProduct(productItemId);
+    }
 }

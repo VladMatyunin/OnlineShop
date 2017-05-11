@@ -3,6 +3,7 @@ package ru.kpfu.itis.model;
 import ru.kpfu.itis.model.additional.OrderStatus;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class Order {
     private User user;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    private Date dateCreated;
 
 
     public Long getId() {
@@ -55,5 +57,13 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

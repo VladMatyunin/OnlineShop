@@ -9,6 +9,7 @@ import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.service.OrderService;
 import ru.kpfu.itis.service.repository.OrderRepository;
 import ru.kpfu.itis.service.repository.UserRepository;
+import ru.kpfu.itis.service.security.MyUserDetail;
 
 /**
  * Created by vladislav on 07.05.17.
@@ -24,9 +25,10 @@ public class ProfileController {
     private OrderRepository orderRepository;
     @RequestMapping(value = "")
     public String loadProfile(ModelMap modelMap){
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        modelMap.addAttribute("orders", orderRepository.findAllByUser(user));
-        modelMap.addAttribute("userInfo", user);
+        User currentUser = userRepository
+                .findByEmail(((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail());
+        modelMap.addAttribute("orders", orderRepository.findAllByUser(currentUser));
+        modelMap.addAttribute("userInfo", currentUser);
         return "profile";
     }
 }

@@ -61,4 +61,12 @@ public class Cart implements Serializable {
     public int getTotalCount(){
         return productItems.size();
     }
+    //TODO: optimize
+    public void deleteProduct(Long id){
+        for (ProductItem pr:getProductItems()) {
+            if (pr.getProduct().getId().equals(id)){
+                getProductItems().remove(pr);
+            }
+        }
+    }
 }

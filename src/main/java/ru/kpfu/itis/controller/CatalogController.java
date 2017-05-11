@@ -1,12 +1,14 @@
 package ru.kpfu.itis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ru.kpfu.itis.model.*;
+import ru.kpfu.itis.model.Brand;
+import ru.kpfu.itis.model.Category;
+import ru.kpfu.itis.model.Product;
+import ru.kpfu.itis.model.ProductItem;
 import ru.kpfu.itis.model.additional.Cart;
 import ru.kpfu.itis.service.ProductService;
 import ru.kpfu.itis.service.StorageService;
@@ -85,8 +87,6 @@ public class CatalogController {
     @ResponseBody
     @RequestMapping(value = "/add_product", method = RequestMethod.POST)
     public int addProduct(@RequestParam("productId") Long productId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email);
         HttpSession session = httpServletRequest.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {

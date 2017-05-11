@@ -11,13 +11,25 @@
             </div>
             <div class="col-md-6" data-animate="fadeInDown">
                 <ul class="menu">
-                    <li><a href="/auth" data-toggle="modal" data-target="#login-modal">Войти</a>
+                <@sec.authorize access="hasRole('ROLE_ANONYMOUS')">
+                    <li><a href="/auth" >Войти</a>
                     </li>
                     <li><a href="/register">Регистрация</a>
                     </li>
-                    <li><a href="/contact">Contact</a>
+                </@sec.authorize>
+                <@sec.authorize access="hasRole('ROLE_USER')">
+                    <li><a href="/profile" ><@sec.authentication property="principal.username"/></a>
                     </li>
-                    <li><a href="#">Recently viewed</a>
+                    <li><a href="/logout">Выйти</a>
+                    </li>
+                </@sec.authorize>
+                <@sec.authorize access="hasRole('ROLE_ADMIN')">
+                    <li><a href="/admin"><@sec.authentication property="principal.username"/></a>
+                    </li>
+                    <li><a href="/logout">Выйти</a>
+                    </li>
+                </@sec.authorize>
+                    <li><a href="/contact">Contact</a>
                     </li>
                 </ul>
             </div>

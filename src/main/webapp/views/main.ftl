@@ -109,25 +109,25 @@ _________________________________________________________ -->
                             <div class="flip-container">
                                 <div class="flipper">
                                     <div class="front">
-                                        <a href="/detail.html">
+                                        <a href="/catalog${pr.product.id}/details">
                                             <img src="/load_image/${pr.product.id}" alt="" class="img-responsive">
                                         </a>
                                     </div>
                                     <div class="back">
-                                        <a href="/detail.html">
+                                        <a href="/catalog${pr.product.id}/details">
                                             <img src="/load_image/${pr.product.id}" alt="" class="img-responsive">
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <a href="/detail.html" class="invisible">
+                            <a href="#" onclick="loadDetails(${pr.product.id})" class="invisible">
                                 <img src="/img/product1.jpg" alt="" class="img-responsive">
                             </a>
                             <div class="text">
-                                <h3><a href="detail.html">${pr.product.description.name}</a></h3>
+                                <h3><a href="#" onclick="loadDetails(${pr.product.id})">${pr.product.description.name}</a></h3>
                                 <p class="price">${pr.product.cost}|<#if pr.number gt 0>${pr.number}<#else>Нет в наличии</#if></p>
                                 <p class="buttons">
-                                    <a href="detail.html" class="btn btn-default">View detail</a>
+                                    <a onclick="loadDetails(${pr.product.id})" class="btn btn-default">View detail</a>
                                     <a href="#" class="btn btn-primary" onclick="addToCart(${pr.product.id})"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </p>
                             </div>
@@ -183,6 +183,18 @@ _________________________________________________________ -->
                     $("#cartNum").html(num);
                 }
             });
+        }
+        function loadDetails(id) {
+            $.ajax({
+                url: "/catalog/"+id+"/details",
+                type: "GET",
+                success: function(modal){
+                    $("#updateModal").remove();
+                    $("#content").append(modal);
+                    $("#updateModal").modal('show');
+                }
+            })
+
         }
     </script>
 </#macro>

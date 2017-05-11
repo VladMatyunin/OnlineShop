@@ -45,14 +45,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authProvider());
         auth
                 .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
-                .and().withUser("admin").password("qwerty").roles("ADMIN");
+                .withUser("user@shop.ru").password("qwerty").roles("USER")
+                .and().withUser("admin@shop.ru").password("qwerty").roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/main/**").hasAnyAuthority("ROLE_SELLER", "ROLE_ADMIN")
+        http.authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/order/**").hasAuthority("ROLE_USER")
+                .antMatchers("/profile/**").hasAuthority("ROLE_USER")
                 .and()
                 .formLogin().loginPage("/auth").loginProcessingUrl("/login").failureUrl("/auth?error=Wrong email or password").usernameParameter("email").passwordParameter("password").defaultSuccessUrl("/catalog/1")
                 .and()

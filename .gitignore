@@ -1,0 +1,40 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+Будет удалено .gitignore
+Будет удалено .idea/artifacts/
+Будет удалено .idea/compiler.xml
+Будет удалено .idea/dataSources.local.xml
+Будет удалено .idea/dataSources.xml
+Будет удалено .idea/dataSources/
+Будет удалено .idea/encodings.xml
+Будет удалено .idea/kotlinc.xml
+Будет удалено .idea/libraries/
+Будет удалено .idea/misc.xml
+Будет удалено .idea/modules.xml
+Будет удалено .idea/uiDesigner.xml
+Будет удалено .idea/workspace.xml
+Будет удалено Shop.iml
+Будет удалено target/
