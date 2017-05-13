@@ -14,6 +14,13 @@ public class ProductDescription {
     private Long id;
     private String name;
     private String description;
+    private int cost;
+
+    public ProductDescription(String name, String description, int cost) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+    }
 
     public Long getId() {
         return id;
@@ -37,5 +44,13 @@ public class ProductDescription {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

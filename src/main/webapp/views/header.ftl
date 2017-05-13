@@ -24,7 +24,7 @@
                     </li>
                 </@sec.authorize>
                 <@sec.authorize access="hasRole('ROLE_ADMIN')">
-                    <li><a href="/admin"><@sec.authentication property="principal.username"/></a>
+                    <li><a href="/admin/users"><@sec.authentication property="principal.username"/></a>
                     </li>
                     <li><a href="/logout">Выйти</a>
                     </li>

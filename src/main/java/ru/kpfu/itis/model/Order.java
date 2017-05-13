@@ -19,7 +19,7 @@ public class Order {
     @ManyToMany
     @JoinTable
     private List<ProductItem> products;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

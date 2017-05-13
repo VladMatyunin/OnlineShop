@@ -9,4 +9,5 @@ import ru.kpfu.itis.model.Brand;
  */
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long>{
+    Brand findByName(String name);
 }

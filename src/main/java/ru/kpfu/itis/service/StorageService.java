@@ -1,6 +1,7 @@
 package ru.kpfu.itis.service;
 
 import ru.kpfu.itis.model.ProductItem;
+import ru.kpfu.itis.model.additional.Cart;
 import ru.kpfu.itis.model.additional.TransactionInform;
 
 /**
@@ -12,4 +13,5 @@ public interface StorageService {
     int getTotalProductCount(Long productId);
     void addProduct(Long storageId, ProductItem productItem);
     void deleteProduct(Long storageId, Long productId);
+    void doOrder(Cart cart);
 }

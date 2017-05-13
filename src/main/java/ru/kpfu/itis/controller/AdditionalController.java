@@ -34,4 +34,8 @@ public class AdditionalController {
         }
         return bytesArray;
     }
+    @RequestMapping(value = "/contact")
+    public String loadContactPage(){
+        return "contact";
+    }
 }

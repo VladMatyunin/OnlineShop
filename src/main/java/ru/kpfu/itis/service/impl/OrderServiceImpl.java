@@ -1,8 +1,10 @@
 package ru.kpfu.itis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.model.Order;
 import ru.kpfu.itis.model.ProductItem;
 import ru.kpfu.itis.model.User;
@@ -10,6 +12,7 @@ import ru.kpfu.itis.model.additional.Cart;
 import ru.kpfu.itis.model.additional.OrderStatus;
 import ru.kpfu.itis.model.additional.TransactionInform;
 import ru.kpfu.itis.service.OrderService;
+import ru.kpfu.itis.service.StorageService;
 import ru.kpfu.itis.service.repository.OrderRepository;
 import ru.kpfu.itis.service.repository.ProductItemRepo;
 import ru.kpfu.itis.service.repository.UserRepository;
@@ -28,6 +31,8 @@ public class OrderServiceImpl implements OrderService{
     UserRepository userRepository;
     @Autowired
     private ProductItemRepo productItemRepo;
+    @Autowired
+    private StorageService storageService;
     @Override
     public TransactionInform createOrder(User user) {
         Order order = new Order();
@@ -51,7 +56,8 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.saveAndFlush(order);
         return new TransactionInform(true,"OK");
     }
-
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Transactional
     @Override
     public void createOrderFromCart(Cart cart) {
         Order order = new Order();
@@ -61,5 +67,6 @@ public class OrderServiceImpl implements OrderService{
         order.setProducts(productItemRepo.save(cart.getProductItems()));
         order.setDateCreated(new Date());
         orderRepository.saveAndFlush(order);
+        storageService.doOrder(cart);
     }
 }

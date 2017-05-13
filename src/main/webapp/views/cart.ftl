@@ -58,7 +58,7 @@
                                                         onclick="changeNumber(${pr.product.id},1)"><i
                                                         class="fa fa-chevron-right"></i></button>
                                             </td>
-                                            <td>${pr.product.cost}</td>
+                                            <td>${pr.product.description.cost}</td>
                                             <td>$0.00</td>
                                             <td>$246.00</td>
                                             <td><a href="" onclick="deleteProduct(${pr.product.id})"><i class="fa fa-trash-o"></i></a>

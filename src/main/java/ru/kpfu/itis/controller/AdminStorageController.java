@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.ProductItem;
 import ru.kpfu.itis.model.Storage;
 import ru.kpfu.itis.service.StorageService;
+import ru.kpfu.itis.service.repository.ProductItemRepo;
 import ru.kpfu.itis.service.repository.ProductRepository;
 import ru.kpfu.itis.service.repository.StorageRepository;
 
@@ -22,6 +23,8 @@ public class AdminStorageController {
     private StorageService storageService;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductItemRepo productItemRepo;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String loadAllStorage(ModelMap modelMap) {
@@ -54,5 +57,12 @@ public class AdminStorageController {
     public String deleteProduct(@PathVariable("id") Long storageId, @PathVariable("product_id") Long productId){
         storageService.deleteProduct(storageId, productId);
         return "redirect:/admin/storage/"+storageId;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/save/{it_id}", method = RequestMethod.POST)
+    public void saveProductItem(@PathVariable("it_id") Long itemId, @RequestParam("num") int count){
+        ProductItem productItem = productItemRepo.findOne(itemId);
+        productItem.setNumber(count);
+        productItemRepo.saveAndFlush(productItem);
     }
 }

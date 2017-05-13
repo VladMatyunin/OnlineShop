@@ -31,7 +31,7 @@
                                 <td>
                                     ${pr.number}
                                 </td>
-                                <td>${pr.product.cost}</td>
+                                <td>${pr.product.description.cost}</td>
                                 <td>$0.00</td>
                                 <td>$246.00</td>
 

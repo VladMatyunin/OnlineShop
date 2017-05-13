@@ -1,9 +1,11 @@
 package ru.kpfu.itis.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import ru.kpfu.itis.model.additional.AuthToken;
 import ru.kpfu.itis.model.additional.UserRole;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by vladislav on 04.05.17.
@@ -27,8 +29,11 @@ public class User {
     @NotEmpty
     private String password;
     @Transient
-    @NotEmpty
     private String confirmPassword;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Order> orders;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private AuthToken authToken;
 
     public Long getId() {
         return id;
@@ -93,5 +98,21 @@ public class User {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public AuthToken getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
     }
 }

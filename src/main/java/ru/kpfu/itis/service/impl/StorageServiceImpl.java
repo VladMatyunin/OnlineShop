@@ -1,11 +1,14 @@
 package ru.kpfu.itis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.model.ProductItem;
 import ru.kpfu.itis.model.Storage;
+import ru.kpfu.itis.model.additional.Cart;
 import ru.kpfu.itis.model.additional.TransactionInform;
 import ru.kpfu.itis.service.StorageService;
+import ru.kpfu.itis.service.repository.ProductItemRepo;
 import ru.kpfu.itis.service.repository.StorageRepository;
 
 import java.util.List;
@@ -18,6 +21,9 @@ import java.util.Objects;
 public class StorageServiceImpl implements StorageService{
     @Autowired
     StorageRepository storageRepository;
+    @Autowired
+    private ProductItemRepo productItemRepo;
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public TransactionInform update(Long storageId, ProductItem productItem) {
         Storage storage = storageRepository.findOne(storageId);
@@ -43,11 +49,11 @@ public class StorageServiceImpl implements StorageService{
         }
         return count;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public void addProduct(Long storageId, ProductItem productItem) {
         Storage storage = storageRepository.findOne(storageId);
-        storage.getProductItems().add(productItem);
+        storage.getProductItems().add(productItemRepo.save(productItem));
         storageRepository.saveAndFlush(storage);
     }
 
@@ -60,5 +66,28 @@ public class StorageServiceImpl implements StorageService{
             }
         }
         storageRepository.saveAndFlush(storage);
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Override
+    public void doOrder(Cart cart) {
+        //TODO: optimize
+        List<Storage> storages = storageRepository.findAll();
+        for (Storage storage: storages){
+            for (ProductItem productItem: storage.getProductItems()){
+                for (ProductItem cartProductItem: cart.getProductItems()){
+                    if (productItem.getProduct().getId().equals(cartProductItem.getProduct().getId())){
+                        if (productItem.getNumber()>=cartProductItem.getNumber()){
+                            cartProductItem.setNumber(0);
+                            productItem.setNumber(productItem.getNumber()-cartProductItem.getNumber());
+                            break;
+                        }
+                        else {
+                            productItem.setNumber(0);
+                            cartProductItem.setNumber(cartProductItem.getNumber()-productItem.getNumber());
+                        }
+                    }
+                }
+            }
+        }
     }
 }

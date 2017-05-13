@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/order/**").hasAuthority("ROLE_USER")
                 .antMatchers("/profile/**").hasAuthority("ROLE_USER")
+
                 .and()
                 .formLogin().loginPage("/auth").loginProcessingUrl("/login").failureUrl("/auth?error=Wrong email or password").usernameParameter("email").passwordParameter("password").defaultSuccessUrl("/catalog/1")
                 .and()

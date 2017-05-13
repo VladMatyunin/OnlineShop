@@ -33,7 +33,7 @@
                             <h1 class="text-center">${product.description.name}</h1>
                             <p class="goToDescription"><a href="#details" class="scroll-to"></a>
                             </p>
-                            <p class="price">$124.00</p>
+                            <p class="price">${product.description.cost}</p>
 
                             <p class="text-center buttons">
                                 <a href="#" class="btn btn-primary" onclick="addToCart(${product.id})"><i

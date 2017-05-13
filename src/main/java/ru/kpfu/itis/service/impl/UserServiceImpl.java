@@ -1,6 +1,7 @@
 package ru.kpfu.itis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.model.additional.AuthToken;
@@ -39,17 +40,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void confirmUser(User user) {
-        User dbUser = getByEmail(user.getEmail());
-        dbUser.setAccepted(!user.getAccepted());
-        userRepository.saveAndFlush(dbUser);
+        user.setAccepted(!user.getAccepted());
+        userRepository.saveAndFlush(user);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public TransactionInform deleteUser(User user) {
         userRepository.delete(user);
         return new TransactionInform(true,"OK");
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public TransactionInform deleteUser(Long id) {
         userRepository.delete(id);
